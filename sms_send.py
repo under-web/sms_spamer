@@ -31,9 +31,24 @@ class Sveznoy:
 
         msg_box = driver.find_element_by_id('messageContent')
         msg_box.send_keys(message_text)
+        time.sleep(1)
+
+        btn_sent = driver.find_element_by_id('btnSent')
+        btn_sent.click()
+        time.sleep(5)
+        driver.close()
+        # btn_ok = driver.find_element_by_id('btnPopUpOk')
+        # btn_ok.click()
 
 if __name__ == '__main__':
     dashboard = Sveznoy()
-    dashboard.get_page_login('http://192.168.1.1/index.html#login.html', 'iptPassword', 'admin',
-                             'btnLogin', 3)
-    dashboard.get_page_sms(89393463310, 'Здесь текст с нашим бомбическим предложением')
+    try:
+        dashboard.get_page_login('http://192.168.1.1/index.html#login.html', 'iptPassword', 'admin',
+                                'btnLogin', 3)
+    except Exception as e:
+        print(e)
+    with open('/home/appdev/Рабочий стол/Текущая/Базы/Юла телефоны.txt',
+              'r', encoding='utf-8', errors='ignore') as txt_file:
+        target_list = txt_file.readlines()
+    for abonent in target_list:
+        dashboard.get_page_sms(abonent, 'Здесь текст с нашим бомбическим предложением')
